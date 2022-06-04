@@ -7,59 +7,75 @@
         mc:Ignorable="d"
         d:DataContext="{d:DesignInstance Type=local:MainViewModel,IsDesignTimeCreatable=False}"
         Title="Trade Order" Height="250" Width="800">
+    <Window.Resources>
+        <ResourceDictionary>
+            <local:OrderToDetailConverter x:Key="OrderToDetailConverter"/>
+        </ResourceDictionary>
+    </Window.Resources>
     <Grid>
         <Border BorderBrush="DarkBlue" BorderThickness="1" CornerRadius="5,5,5,5" Background="AliceBlue">
-            <Grid>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                </Grid.RowDefinitions>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto" />
-                    <ColumnDefinition Width="Auto" />
-                    <ColumnDefinition Width="Auto" />
-                    <ColumnDefinition Width="Auto" />
-                    <ColumnDefinition Width="Auto" />
-                </Grid.ColumnDefinitions>
+            <StackPanel Orientation="Vertical">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
 
-                <StackPanel Margin="5,5,5,5" Grid.Row="0" Grid.Column="0" Width="145" Orientation="Vertical">
-                    <TextBlock Margin="5,5,5,5" Text="Product" />
-                    <ComboBox Margin="5,5,5,5" ItemsSource="{Binding Products}" SelectedItem="{Binding Product, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-                </StackPanel>
+                    <StackPanel Margin="5,5,5,5" Grid.Row="0" Grid.Column="0" Width="145" Orientation="Vertical">
+                        <TextBlock Margin="5,5,5,5" Text="Product" />
+                        <ComboBox Margin="5,5,5,5" ItemsSource="{Binding Products}" SelectedItem="{Binding Product, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                    </StackPanel>
 
-                <StackPanel Margin="5,5,5,5" Grid.Row="0" Grid.Column="1" Width="145" Orientation="Vertical">
-                    <TextBlock Margin="5,5,5,5" Text="Price" />
-                    <TextBox Margin="5,5,5,5" Text="{Binding Price, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-                </StackPanel>
+                    <StackPanel Margin="5,5,5,5" Grid.Row="0" Grid.Column="1" Width="145" Orientation="Vertical">
+                        <TextBlock Margin="5,5,5,5" Text="Price" />
+                        <TextBox Margin="5,5,5,5" Text="{Binding Price, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, StringFormat=n2}"/>
+                    </StackPanel>
 
-                <StackPanel Margin="5,5,5,5" Grid.Row="0" Grid.Column="2" Width="145" Orientation="Vertical">
-                    <TextBlock Margin="5,5,5,5" Text="Amount" />
-                    <TextBox Margin="5,5,5,5" Text="{Binding Amount, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-                </StackPanel>
+                    <StackPanel Margin="5,5,5,5" Grid.Row="0" Grid.Column="2" Width="145" Orientation="Vertical">
+                        <TextBlock Margin="5,5,5,5" Text="Amount" />
+                        <TextBox Margin="5,5,5,5" Text="{Binding Amount, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                    </StackPanel>
 
-                <StackPanel Margin="5,5,5,5" Grid.Row="0" Grid.Column="3" Width="145" Orientation="Vertical">
-                    <TextBlock Margin="5,5,5,5" Text="Trader" />
-                    <ComboBox Margin="5,5,5,5" ItemsSource="{Binding Traders}" SelectedItem="{Binding Trader, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-                </StackPanel>
+                    <StackPanel Margin="5,5,5,5" Grid.Row="0" Grid.Column="3" Width="145" Orientation="Vertical">
+                        <TextBlock Margin="5,5,5,5" Text="Trader" />
+                        <ComboBox Margin="5,5,5,5" ItemsSource="{Binding Traders}" SelectedItem="{Binding Trader, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                    </StackPanel>
 
-                <StackPanel Margin="5,5,5,5" Grid.Row="0" Grid.Column="4" Width="145" Orientation="Vertical">
-                    <TextBlock Margin="5,5,5,5" Text="Customer" />
-                    <ComboBox Margin="5,5,5,5" ItemsSource="{Binding Customers}" SelectedItem="{Binding Customer, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-                </StackPanel>
+                    <StackPanel Margin="5,5,5,5" Grid.Row="0" Grid.Column="4" Width="145" Orientation="Vertical">
+                        <TextBlock Margin="5,5,5,5" Text="Customer" />
+                        <ComboBox Margin="5,5,5,5" ItemsSource="{Binding Customers}" SelectedItem="{Binding Customer, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                    </StackPanel>
 
-                <StackPanel Margin="5,5,5,5" Grid.Row="1" Grid.Column="2" Width="145" Orientation="Vertical">
-                    <Button Margin="5,5,5,5" Content="Buy" Command="{Binding BuyCommand}"/>
-                </StackPanel>
+                    <StackPanel Margin="5,5,5,5" Grid.Row="1" Grid.Column="2" Width="145" Orientation="Vertical">
+                        <Button Margin="5,5,5,5" Content="Buy" Command="{Binding BuyCommand}"/>
+                    </StackPanel>
 
-                <StackPanel Margin="5,5,5,5" Grid.Row="1" Grid.Column="3" Width="145" Orientation="Vertical">
-                    <Button Margin="5,5,5,5" Content="Sell" Command="{Binding SellCommand}"/>
-                </StackPanel>
+                    <StackPanel Margin="5,5,5,5" Grid.Row="1" Grid.Column="3" Width="145" Orientation="Vertical">
+                        <Button Margin="5,5,5,5" Content="Sell" Command="{Binding SellCommand}"/>
+                    </StackPanel>
 
-                <StackPanel Margin="5,5,5,5" Grid.Row="1" Grid.Column="4" Width="145" Orientation="Vertical">
-                    <Button Margin="5,5,5,5" Content="Open Order Book" Command="{Binding OpenBookCommand}"/>
+                    <StackPanel Margin="5,5,5,5" Grid.Row="1" Grid.Column="4" Width="145" Orientation="Vertical">
+                        <Button Margin="5,5,5,5" Content="Open Order Book" Command="{Binding OpenBookCommand}"/>
+                    </StackPanel>
+                </Grid>
+                <StackPanel Margin="5,5,5,5" Orientation="Vertical">
+                    <TextBlock Text="Notifications"/>
+                    <ListView ItemsSource="{Binding NotifiedOrders}">
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <ContentPresenter Content="{Binding Converter={StaticResource OrderToDetailConverter}}"/>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
                 </StackPanel>
-            </Grid>
+            </StackPanel>
         </Border>
     </Grid>
 </Window>

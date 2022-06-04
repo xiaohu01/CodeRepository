@@ -142,7 +142,7 @@ namespace TradeOrderService
 
 
 [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-[System.ServiceModel.ServiceContractAttribute(ConfigurationName="IOrderService")]
+[System.ServiceModel.ServiceContractAttribute(ConfigurationName="IOrderService", CallbackContract=typeof(IOrderServiceCallback), SessionMode=System.ServiceModel.SessionMode.Required)]
 public interface IOrderService
 {
     
@@ -172,36 +172,45 @@ public interface IOrderService
 }
 
 [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+public interface IOrderServiceCallback
+{
+    
+    [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IOrderService/NotifyOrder", ReplyAction="http://tempuri.org/IOrderService/NotifyOrderResponse")]
+    void NotifyOrder(TradeOrderService.Order order);
+}
+
+[System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
 public interface IOrderServiceChannel : IOrderService, System.ServiceModel.IClientChannel
 {
 }
 
 [System.Diagnostics.DebuggerStepThroughAttribute()]
 [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-public partial class OrderServiceClient : System.ServiceModel.ClientBase<IOrderService>, IOrderService
+public partial class OrderServiceClient : System.ServiceModel.DuplexClientBase<IOrderService>, IOrderService
 {
     
-    public OrderServiceClient()
+    public OrderServiceClient(System.ServiceModel.InstanceContext callbackInstance) : 
+            base(callbackInstance)
     {
     }
     
-    public OrderServiceClient(string endpointConfigurationName) : 
-            base(endpointConfigurationName)
+    public OrderServiceClient(System.ServiceModel.InstanceContext callbackInstance, string endpointConfigurationName) : 
+            base(callbackInstance, endpointConfigurationName)
     {
     }
     
-    public OrderServiceClient(string endpointConfigurationName, string remoteAddress) : 
-            base(endpointConfigurationName, remoteAddress)
+    public OrderServiceClient(System.ServiceModel.InstanceContext callbackInstance, string endpointConfigurationName, string remoteAddress) : 
+            base(callbackInstance, endpointConfigurationName, remoteAddress)
     {
     }
     
-    public OrderServiceClient(string endpointConfigurationName, System.ServiceModel.EndpointAddress remoteAddress) : 
-            base(endpointConfigurationName, remoteAddress)
+    public OrderServiceClient(System.ServiceModel.InstanceContext callbackInstance, string endpointConfigurationName, System.ServiceModel.EndpointAddress remoteAddress) : 
+            base(callbackInstance, endpointConfigurationName, remoteAddress)
     {
     }
     
-    public OrderServiceClient(System.ServiceModel.Channels.Binding binding, System.ServiceModel.EndpointAddress remoteAddress) : 
-            base(binding, remoteAddress)
+    public OrderServiceClient(System.ServiceModel.InstanceContext callbackInstance, System.ServiceModel.Channels.Binding binding, System.ServiceModel.EndpointAddress remoteAddress) : 
+            base(callbackInstance, binding, remoteAddress)
     {
     }
     

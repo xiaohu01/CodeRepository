@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
+using System.ServiceModel;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
@@ -27,7 +29,9 @@ namespace TradeBroker
             SellCommand = new RelayCommand(ExecuteSellOrder, CanExecuteSellOrder);
             OpenBookCommand = new RelayCommand(ExecuteOpenBook, CanExecuteOpenBook);
 
-            _client = new OrderServiceClient();
+            NotifiedOrders = new ObservableCollection<Order>();
+
+            _client = new OrderServiceClient(new InstanceContext(new NotifyOrderHandler(NotifiedOrders)));
         }
         public ICollection<string> Products { get; private set; }
         public ICollection<string> Traders { get; private set; }
@@ -36,6 +40,8 @@ namespace TradeBroker
         public ICommand BuyCommand { get; private set; }
         public ICommand SellCommand { get; private set; }
         public ICommand OpenBookCommand { get; private set; }
+
+        public ObservableCollection<Order> NotifiedOrders { get; private set; }
 
         public string Product 
         {
@@ -104,7 +110,7 @@ namespace TradeBroker
                 BuySell = true
             };
 
-            var retOrder = _client.AddOrUpdateOrder(order);
+            var retOrder = _client.AddOrUpdateOrderAsync(order);
         }
 
         private bool CanExecuteBuyOrder(object obj)
@@ -125,7 +131,7 @@ namespace TradeBroker
                 BuySell = false
             };
 
-            var retOrder = _client.AddOrUpdateOrder(order);
+            var retOrder = _client.AddOrUpdateOrderAsync(order);
         }
 
         private bool CanExecuteSellOrder(object obj)

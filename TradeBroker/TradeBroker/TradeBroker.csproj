@@ -81,11 +81,13 @@
     </ApplicationDefinition>
     <Compile Include="BooleanToBuySellConverter.cs" />
     <Compile Include="MainViewModel.cs" />
+    <Compile Include="NotifyOrderHandler.cs" />
     <Compile Include="OrderBookView.xaml.cs">
       <DependentUpon>OrderBookView.xaml</DependentUpon>
     </Compile>
     <Compile Include="OrderBookViewModel.cs" />
     <Compile Include="OrderService.cs" />
+    <Compile Include="OrderToDetailConverter.cs" />
     <Compile Include="RelayCommand.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>

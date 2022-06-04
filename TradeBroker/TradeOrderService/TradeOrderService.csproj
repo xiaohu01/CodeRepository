@@ -65,6 +65,7 @@
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Client.cs" />
     <Compile Include="OrderRepository.cs" />
     <Compile Include="OrderService.svc.cs">
       <DependentUpon>OrderService.svc</DependentUpon>
