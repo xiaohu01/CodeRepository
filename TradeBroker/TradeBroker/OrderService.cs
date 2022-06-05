@@ -146,6 +146,18 @@ namespace TradeOrderService
 public interface IOrderService
 {
     
+    [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/IOrderService/Subscribe")]
+    void Subscribe(string user);
+    
+    [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/IOrderService/Subscribe")]
+    System.Threading.Tasks.Task SubscribeAsync(string user);
+    
+    [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/IOrderService/Unsubscribe")]
+    void Unsubscribe(string user);
+    
+    [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/IOrderService/Unsubscribe")]
+    System.Threading.Tasks.Task UnsubscribeAsync(string user);
+    
     [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IOrderService/GetOrder", ReplyAction="http://tempuri.org/IOrderService/GetOrderResponse")]
     TradeOrderService.Order GetOrder(int Id);
     
@@ -158,24 +170,24 @@ public interface IOrderService
     [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IOrderService/GetAllOrders", ReplyAction="http://tempuri.org/IOrderService/GetAllOrdersResponse")]
     System.Threading.Tasks.Task<TradeOrderService.Order[]> GetAllOrdersAsync();
     
-    [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IOrderService/AddOrUpdateOrder", ReplyAction="http://tempuri.org/IOrderService/AddOrUpdateOrderResponse")]
-    TradeOrderService.Order AddOrUpdateOrder(TradeOrderService.Order order);
+    [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/IOrderService/AddOrUpdateOrder")]
+    void AddOrUpdateOrder(TradeOrderService.Order order);
     
-    [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IOrderService/AddOrUpdateOrder", ReplyAction="http://tempuri.org/IOrderService/AddOrUpdateOrderResponse")]
-    System.Threading.Tasks.Task<TradeOrderService.Order> AddOrUpdateOrderAsync(TradeOrderService.Order order);
+    [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/IOrderService/AddOrUpdateOrder")]
+    System.Threading.Tasks.Task AddOrUpdateOrderAsync(TradeOrderService.Order order);
     
-    [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IOrderService/DeleteOrder", ReplyAction="http://tempuri.org/IOrderService/DeleteOrderResponse")]
-    TradeOrderService.Order DeleteOrder(TradeOrderService.Order order);
+    [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/IOrderService/DeleteOrder")]
+    void DeleteOrder(TradeOrderService.Order order);
     
-    [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IOrderService/DeleteOrder", ReplyAction="http://tempuri.org/IOrderService/DeleteOrderResponse")]
-    System.Threading.Tasks.Task<TradeOrderService.Order> DeleteOrderAsync(TradeOrderService.Order order);
+    [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/IOrderService/DeleteOrder")]
+    System.Threading.Tasks.Task DeleteOrderAsync(TradeOrderService.Order order);
 }
 
 [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
 public interface IOrderServiceCallback
 {
     
-    [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IOrderService/NotifyOrder", ReplyAction="http://tempuri.org/IOrderService/NotifyOrderResponse")]
+    [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/IOrderService/NotifyOrder")]
     void NotifyOrder(TradeOrderService.Order order);
 }
 
@@ -214,6 +226,26 @@ public partial class OrderServiceClient : System.ServiceModel.DuplexClientBase<I
     {
     }
     
+    public void Subscribe(string user)
+    {
+        base.Channel.Subscribe(user);
+    }
+    
+    public System.Threading.Tasks.Task SubscribeAsync(string user)
+    {
+        return base.Channel.SubscribeAsync(user);
+    }
+    
+    public void Unsubscribe(string user)
+    {
+        base.Channel.Unsubscribe(user);
+    }
+    
+    public System.Threading.Tasks.Task UnsubscribeAsync(string user)
+    {
+        return base.Channel.UnsubscribeAsync(user);
+    }
+    
     public TradeOrderService.Order GetOrder(int Id)
     {
         return base.Channel.GetOrder(Id);
@@ -234,22 +266,22 @@ public partial class OrderServiceClient : System.ServiceModel.DuplexClientBase<I
         return base.Channel.GetAllOrdersAsync();
     }
     
-    public TradeOrderService.Order AddOrUpdateOrder(TradeOrderService.Order order)
+    public void AddOrUpdateOrder(TradeOrderService.Order order)
     {
-        return base.Channel.AddOrUpdateOrder(order);
+        base.Channel.AddOrUpdateOrder(order);
     }
     
-    public System.Threading.Tasks.Task<TradeOrderService.Order> AddOrUpdateOrderAsync(TradeOrderService.Order order)
+    public System.Threading.Tasks.Task AddOrUpdateOrderAsync(TradeOrderService.Order order)
     {
         return base.Channel.AddOrUpdateOrderAsync(order);
     }
     
-    public TradeOrderService.Order DeleteOrder(TradeOrderService.Order order)
+    public void DeleteOrder(TradeOrderService.Order order)
     {
-        return base.Channel.DeleteOrder(order);
+        base.Channel.DeleteOrder(order);
     }
     
-    public System.Threading.Tasks.Task<TradeOrderService.Order> DeleteOrderAsync(TradeOrderService.Order order)
+    public System.Threading.Tasks.Task DeleteOrderAsync(TradeOrderService.Order order)
     {
         return base.Channel.DeleteOrderAsync(order);
     }

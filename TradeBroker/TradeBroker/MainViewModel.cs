@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Linq;
 using System.ServiceModel;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Input;
 using TradeOrderService;
 
@@ -19,12 +15,15 @@ namespace TradeBroker
         private decimal _price;
         private int _amount;
         private OrderServiceClient _client;
+        private bool _subscribed;
         public MainViewModel()
         {
             Products = new List<string> { "Apple", "Tesla", "Facebook", "Amazon", "Google", "Netflex" };
             Traders = new List<string> { "John Smith", "Boris Johnson", "George Bush", "Joe Biden" };
             Customers = new List<string> { "Bill Clinton", "Richard Nixon", "Donald Trump" };
 
+            SubscribeCommand = new RelayCommand(ExecuteSubscribe, CanExecuteSubscribe);
+            UnsubscribeCommand = new RelayCommand(ExecuteUnsubscribe, CanExecuteUnsubscribe);
             BuyCommand = new RelayCommand(ExecuteBuyOrder, CanExecuteBuyOrder);
             SellCommand = new RelayCommand(ExecuteSellOrder, CanExecuteSellOrder);
             OpenBookCommand = new RelayCommand(ExecuteOpenBook, CanExecuteOpenBook);
@@ -37,11 +36,23 @@ namespace TradeBroker
         public ICollection<string> Traders { get; private set; }
         public ICollection<string> Customers { get; private set; }
 
+        public ICommand SubscribeCommand { get; private set; }
+        public ICommand UnsubscribeCommand { get; private set; }
         public ICommand BuyCommand { get; private set; }
         public ICommand SellCommand { get; private set; }
         public ICommand OpenBookCommand { get; private set; }
 
         public ObservableCollection<Order> NotifiedOrders { get; private set; }
+
+        public bool Subscribed
+        {
+            get { return _subscribed; }
+            set
+            {
+                _subscribed = value;
+                OnPropertyChange(nameof(Subscribed));
+            }
+        }
 
         public string Product 
         {
@@ -59,6 +70,8 @@ namespace TradeBroker
             {
                 _trader = value;
                 OnPropertyChange(nameof(Trader));
+                ((RelayCommand)SubscribeCommand).RaiseCanExecuteChange();
+                ((RelayCommand)UnsubscribeCommand).RaiseCanExecuteChange();
             }
         }
         public string Customer 
@@ -110,12 +123,12 @@ namespace TradeBroker
                 BuySell = true
             };
 
-            var retOrder = _client.AddOrUpdateOrderAsync(order);
+            _client.AddOrUpdateOrderAsync(order);
         }
 
         private bool CanExecuteBuyOrder(object obj)
         {
-            return true;
+            return Subscribed;
         }
 
         private void ExecuteSellOrder(object obj)
@@ -131,12 +144,12 @@ namespace TradeBroker
                 BuySell = false
             };
 
-            var retOrder = _client.AddOrUpdateOrderAsync(order);
+            _client.AddOrUpdateOrderAsync(order);
         }
 
         private bool CanExecuteSellOrder(object obj)
         {
-            return true;
+            return Subscribed;
         }
 
         private void ExecuteOpenBook(object obj)
@@ -150,6 +163,28 @@ namespace TradeBroker
         private bool CanExecuteOpenBook(object obj)
         {
             return true;
+        }
+
+        private void ExecuteSubscribe(object obj)
+        {
+            _client.Subscribe(Trader);
+            Subscribed = true;
+        }
+
+        private bool CanExecuteSubscribe(object obj)
+        {
+            return !string.IsNullOrEmpty(Trader) && !Subscribed;
+        }
+
+        private void ExecuteUnsubscribe(object obj)
+        {
+            _client.Unsubscribe(Trader);
+            Subscribed = false;
+        }
+
+        private bool CanExecuteUnsubscribe(object obj)
+        {
+            return !string.IsNullOrEmpty(Trader) && Subscribed;
         }
     }
 }

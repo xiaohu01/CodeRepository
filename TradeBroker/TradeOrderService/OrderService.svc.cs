@@ -1,10 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.Serialization;
 using System.ServiceModel;
-using System.ServiceModel.Web;
-using System.Text;
 
 namespace TradeOrderService
 {
@@ -13,39 +10,16 @@ namespace TradeOrderService
     [ServiceBehavior(ConcurrencyMode = ConcurrencyMode.Multiple, InstanceContextMode = InstanceContextMode.Single)]
     public class OrderService : IOrderService
     {
-        private readonly List<Client> _clients;
+        private static readonly List<Client> _clients = new List<Client>();
         object locker = new object();
-
-        public OrderService()
-        {
-            _clients = new List<Client>();
-        }
 
         INotifyOrderService GetCurrentCallback()
         {
             return OperationContext.Current.GetCallbackChannel<INotifyOrderService>();
         }
-        public Order AddOrUpdateOrder(Order order)
+        public void AddOrUpdateOrder(Order order)
         {
-            lock (locker)
-            {
-                if(order != null && !string.IsNullOrEmpty(order.Trader))
-                {
-                    Client client = new Client { Username = order.Trader, ClientCallback = GetCurrentCallback() };
-
-                    foreach(Client c in _clients)
-                    {
-                        if(c.Username == order.Trader)
-                        {
-                            _clients.Remove(c);
-                            break;
-                        }
-                    }
-                    _clients.Add(client);
-                }
-            }
-
-            if(_clients != null && _clients.Count > 0)
+            if (_clients != null && _clients.Count > 0)
             {
                 foreach(Client c in _clients)
                 {
@@ -63,14 +37,12 @@ namespace TradeOrderService
                 }
             }
 
-            Order result = OrderRepository.Instance.AddOrUpdateOrder(order);
-
-            return result;
+            OrderRepository.Instance.AddOrUpdateOrder(order);
         }
 
-        public Order DeleteOrder(Order order)
+        public void DeleteOrder(Order order)
         {
-            return OrderRepository.Instance.DeleteOrder(order);
+            OrderRepository.Instance.DeleteOrder(order);
         }
 
         public IList<Order> GetAllOrders()
@@ -81,6 +53,38 @@ namespace TradeOrderService
         public Order GetOrder(int Id)
         {
             return OrderRepository.Instance.GetOrder(Id);
+        }
+
+        public void Subscribe(string user)
+        {
+            lock (locker)
+            {
+                if (!string.IsNullOrEmpty(user))
+                {
+                    Client client = new Client { Username = user, ClientCallback = GetCurrentCallback() };
+
+                    if(!_clients.Any(c => c.Username == user))
+                        _clients.Add(client);
+                } 
+            }
+        }
+
+        public void Unsubscribe(string user)
+        {
+            lock (locker)
+            {
+                if (!string.IsNullOrEmpty(user))
+                {
+                    foreach (Client c in _clients)
+                    {
+                        if (c.Username == user)
+                        {
+                            _clients.Remove(c);
+                            break;
+                        }
+                    }
+                } 
+            }
         }
     }
 }

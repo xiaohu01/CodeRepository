@@ -1,24 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.ObjectModel;
 using TradeOrderService;
 
 namespace TradeBroker
 {
     public class NotifyOrderHandler : IOrderServiceCallback
     {
-        private readonly ObservableCollection<Order> _notifiedOreders;
+        private readonly ObservableCollection<Order> _notifiedOrders;
 
-        public NotifyOrderHandler(ObservableCollection<Order> notifiedOreders)
+        public NotifyOrderHandler(ObservableCollection<Order> notifiedOrders)
         {
-            _notifiedOreders = notifiedOreders;
+            _notifiedOrders = notifiedOrders;
         }
         public void NotifyOrder(Order order)
         {
-            _notifiedOreders?.Add(order);
+            _notifiedOrders?.Add(order);
         }
     }
 }

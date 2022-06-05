@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using System.Runtime.Serialization;
 using System.ServiceModel;
-using System.ServiceModel.Web;
-using System.Text;
 
 namespace TradeOrderService
 {
@@ -12,6 +8,11 @@ namespace TradeOrderService
     [ServiceContract(SessionMode = SessionMode.Required, CallbackContract = typeof(INotifyOrderService))]
     public interface IOrderService
     {
+        [OperationContract(IsOneWay = true)]
+        void Subscribe(string user);
+
+        [OperationContract(IsOneWay = true)]
+        void Unsubscribe(string user);
 
         [OperationContract]
         Order GetOrder(int Id);
@@ -19,16 +20,16 @@ namespace TradeOrderService
         [OperationContract]
         IList<Order> GetAllOrders();
 
-        [OperationContract]
-        Order AddOrUpdateOrder(Order order);
+        [OperationContract(IsOneWay = true)]
+        void AddOrUpdateOrder(Order order);
 
-        [OperationContract]
-        Order DeleteOrder(Order order);
+        [OperationContract(IsOneWay = true)]
+        void DeleteOrder(Order order);
     }
 
     public interface INotifyOrderService
     {
-        [OperationContract]
+        [OperationContract(IsOneWay = true)]
         void NotifyOrder(Order order);
     }
 

@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-
-namespace TradeOrderService
+﻿namespace TradeOrderService
 {
     public class Client
     {
@@ -13,7 +8,7 @@ namespace TradeOrderService
             _username = string.Empty;
         }
 
-        private static INotifyOrderService _clientCallback;
+        private INotifyOrderService _clientCallback;
         public INotifyOrderService ClientCallback
         {
             get { return _clientCallback; }

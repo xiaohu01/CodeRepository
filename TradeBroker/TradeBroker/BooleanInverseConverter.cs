@@ -4,12 +4,13 @@ using System.Windows.Data;
 
 namespace TradeBroker
 {
-    public class BooleanToBuySellConverter : IValueConverter
+    public sealed class BooleanInverseConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            var original = (bool)(value ?? false);
-            return original ? "Buy" : "Sell";
+            if (targetType != typeof(bool))
+                throw new InvalidOperationException("The target must be a boolean");
+            return !(bool)value;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
