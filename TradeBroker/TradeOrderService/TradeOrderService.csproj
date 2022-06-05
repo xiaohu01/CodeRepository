@@ -66,6 +66,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Client.cs" />
+    <Compile Include="Logger.cs" />
+    <Compile Include="LogHelper.cs" />
     <Compile Include="OrderRepository.cs" />
     <Compile Include="OrderService.svc.cs">
       <DependentUpon>OrderService.svc</DependentUpon>

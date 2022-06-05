@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.ServiceModel;
@@ -123,7 +124,14 @@ namespace TradeBroker
                 BuySell = true
             };
 
-            _client.AddOrUpdateOrderAsync(order);
+            try
+            {
+                _client.AddOrUpdateOrderAsync(order);
+            }
+            catch (Exception e)
+            {               
+                throw new Exception($"ExecuteBuyOrder throws an exception with message {e.Message}");
+            }
         }
 
         private bool CanExecuteBuyOrder(object obj)
@@ -144,7 +152,14 @@ namespace TradeBroker
                 BuySell = false
             };
 
-            _client.AddOrUpdateOrderAsync(order);
+            try
+            {
+                _client.AddOrUpdateOrderAsync(order);
+            }
+            catch (Exception e)
+            {
+                throw new Exception($"ExecuteSellOrder throws an exception with message {e.Message}");
+            }
         }
 
         private bool CanExecuteSellOrder(object obj)
@@ -167,7 +182,15 @@ namespace TradeBroker
 
         private void ExecuteSubscribe(object obj)
         {
-            _client.Subscribe(Trader);
+            try
+            {
+                _client.Subscribe(Trader);
+            }
+            catch (Exception e)
+            {
+                throw new Exception($"ExecuteSubscribe throws an exception with message {e.Message}");
+            }
+
             Subscribed = true;
         }
 
@@ -178,7 +201,14 @@ namespace TradeBroker
 
         private void ExecuteUnsubscribe(object obj)
         {
-            _client.Unsubscribe(Trader);
+            try
+            {
+                _client.Unsubscribe(Trader);
+            }
+            catch (Exception e)
+            {
+                throw new Exception($"ExecuteUnsubscribe throws an exception with message {e.Message}");
+            }
             Subscribed = false;
         }
 

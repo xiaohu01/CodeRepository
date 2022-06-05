@@ -19,6 +19,9 @@ namespace TradeOrderService
         }
         public void AddOrUpdateOrder(Order order)
         {
+            string buysell = order.BuySell ? "buy" : "sell";
+            LogHelper.Log($"{DateTime.UtcNow.ToString("yyyy'-'MM'-'dd'T'HH':'mm':'ss.fffffffK")}: Start to add/update order for {order.Customer} to {buysell} {order.Amount} of {order.Product} at £{order.Price} by {order.Trader}.");
+
             if (_clients != null && _clients.Count > 0)
             {
                 foreach(Client c in _clients)
@@ -27,6 +30,7 @@ namespace TradeOrderService
                     {
                         try
                         {
+                            LogHelper.Log($"{DateTime.UtcNow.ToString("yyyy'-'MM'-'dd'T'HH':'mm':'ss.fffffffK")}: Notify {c.Username} of order for {order.Customer} to {buysell} {order.Amount} of {order.Product} at £{order.Price} by {order.Trader}");
                             c.ClientCallback.NotifyOrder(order);
                         }
                         catch(Exception e)
@@ -38,6 +42,8 @@ namespace TradeOrderService
             }
 
             OrderRepository.Instance.AddOrUpdateOrder(order);
+
+            LogHelper.Log($"{DateTime.UtcNow.ToString("yyyy'-'MM'-'dd'T'HH':'mm':'ss.fffffffK")}: End to add/update order for {order.Customer} to {buysell} {order.Amount} of {order.Product} at £{order.Price} by {order.Trader}.");
         }
 
         public void DeleteOrder(Order order)
@@ -64,7 +70,10 @@ namespace TradeOrderService
                     Client client = new Client { Username = user, ClientCallback = GetCurrentCallback() };
 
                     if(!_clients.Any(c => c.Username == user))
+                    {
+                        LogHelper.Log($"{DateTime.UtcNow.ToString("yyyy'-'MM'-'dd'T'HH':'mm':'ss.fffffffK")}: Subscribe {user} to trade order service.");
                         _clients.Add(client);
+                    }                     
                 } 
             }
         }
@@ -79,6 +88,7 @@ namespace TradeOrderService
                     {
                         if (c.Username == user)
                         {
+                            LogHelper.Log($"{DateTime.UtcNow.ToString("yyyy'-'MM'-'dd'T'HH':'mm':'ss.fffffffK")}: Unsubscribe {user} to trade order service.");
                             _clients.Remove(c);
                             break;
                         }
