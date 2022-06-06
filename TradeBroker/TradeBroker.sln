@@ -7,6 +7,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TradeBroker", "TradeBroker\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TradeOrderService", "TradeOrderService\TradeOrderService.csproj", "{7F9C6C70-01F4-492E-A791-3F433EDF6319}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TradeOrderServiceUnitTest", "TradeOrderServiceUnitTest\TradeOrderServiceUnitTest.csproj", "{79DB23F3-256E-4712-A0EC-829AF99423AC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TradeBrokerUnitTest", "TradeBrokerUnitTest\TradeBrokerUnitTest.csproj", "{FB0E0CAE-38D5-47C6-BA0C-778F9C875FAD}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +25,14 @@ Global
 		{7F9C6C70-01F4-492E-A791-3F433EDF6319}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7F9C6C70-01F4-492E-A791-3F433EDF6319}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7F9C6C70-01F4-492E-A791-3F433EDF6319}.Release|Any CPU.Build.0 = Release|Any CPU
+		{79DB23F3-256E-4712-A0EC-829AF99423AC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{79DB23F3-256E-4712-A0EC-829AF99423AC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{79DB23F3-256E-4712-A0EC-829AF99423AC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{79DB23F3-256E-4712-A0EC-829AF99423AC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FB0E0CAE-38D5-47C6-BA0C-778F9C875FAD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FB0E0CAE-38D5-47C6-BA0C-778F9C875FAD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FB0E0CAE-38D5-47C6-BA0C-778F9C875FAD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FB0E0CAE-38D5-47C6-BA0C-778F9C875FAD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
